@@ -26,7 +26,7 @@ const Home = (data: Props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>{data.tenant.name} | Faça seu pedido</title>
+                <title>{`${data.tenant.name} | Faça seu pedido`}</title>
             </Head>
             <header className={styles.header}>
                 <div className={styles.headerTop}>
