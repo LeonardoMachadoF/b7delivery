@@ -1,0 +1,53 @@
+Planejando do zero um Saas Multi-tenancy para pequenas empresas.
+
+Saas = Software as a service
+Multi-tenancy = Vários inquilinos
+
+Single-Tenant
+- Vantagem: Sistema Independente, amplamente personalizavel
+- Desvantagem: Alto custo de manutenção
+
+Multi-Tenant
+- Domínio
+- Sub-dominio 
+- Rota
+
+Sistema de Delivery
+-Usuarios:
+--Admin do Sistema
+--Usuario Final
+--Estabelecimento
+
+Funcionalidades:
+- Carrinho de compras (com checkout)
+- Listagem de produtos
+- Login/Cadastro
+- Visualização de pedidos
+
+-Gestão de pedidos
+-Gestao de produtos
+
+Telas:
+- Home - Listagem de promoções e produtos
+- Página do produto específico
+- Carrinho de compras
+- Checkout (para logado)
+- Cadastro de endereços
+- Login/Cadastro
+- Lista de pedidos
+- Pedido individual
+
+- Login/Cadastro para estabelecimento
+- Listagem de pedidos
+- Edição de pedidos
+- Listagem de produtos
+- Edição de produtos
+
+- Listagem de Estabelecimentos
+- Edição de estabelecimento
+
+Tecnologias
+
+- NextJS (com SSR)
+- PostgreSQL
+- Prisma (ORM)

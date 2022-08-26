@@ -1,0 +1,48 @@
+.container {
+  background-color: #FFFFFF;
+}
+
+.header {
+  background-color: #F9F9FB;
+  padding: 50px 24px 30px 24px;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 27px;
+}
+
+.headerTitle {
+  font-weight: 500;
+  font-size: 24px;
+  color: #1B1B1B;
+  margin-bottom: 8px;
+}
+
+.headerSubTitle {
+  font-weight: 400;
+  font-size: 16px;
+  color: rgba(151, 151, 151, 0.8);
+}
+
+.menuButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 18px;
+  height: 16px;
+  margin-top: -20px;
+}
+
+.menuButtonLine {
+  height: 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 0 24px 0px 24px;
+}
