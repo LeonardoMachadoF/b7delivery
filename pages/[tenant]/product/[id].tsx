@@ -12,7 +12,7 @@ import { Product } from '../../../types/Product';
 import { Tenant } from '../../../types/Tenant';
 
 const Product = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
+    const { tenant, setTenant, listProducts, setAddProduct } = useAppContext();
     useEffect(() => {
         setTenant(data.tenant)
     }, [])
@@ -22,7 +22,8 @@ const Product = (data: Props) => {
     const formatter = useFormatter();
 
     const handleAddToCart = () => {
-
+        for (let i = 0; i < qtCount; i++) setAddProduct(data.product);
+        console.log(listProducts)
     }
 
     const onUpdateQt = (newCount: number) => {

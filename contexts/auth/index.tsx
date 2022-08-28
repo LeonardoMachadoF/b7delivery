@@ -2,11 +2,11 @@ import { createContext, useReducer } from 'react';
 import { listProductsInitial, reducer } from './reducer';
 import { ContextType, DataType, ProviderType } from './types';
 
-export { useAppContext } from './hook';
+export { useAuthContext } from './hook';
 
 const initialState: DataType = {
-    tenant: null,
-    listProducts: listProductsInitial
+    user: null,
+    token: ''
 }
 
 export const AppContext = createContext<ContextType>({

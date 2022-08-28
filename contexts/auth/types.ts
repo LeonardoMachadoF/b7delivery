@@ -1,10 +1,9 @@
 import { Dispatch, ReactNode } from "react";
-import { Product } from "../../types/Product";
-import { Tenant } from "../../types/Tenant"
+import { User } from "../../types/User";
 
 export type DataType = {
-    tenant: Tenant | null;
-    listProducts: Product[] | [];
+    token: string;
+    user: User | null;
 }
 
 export type ActionType = {
@@ -22,6 +21,6 @@ export type ProviderType = {
 }
 
 export enum Actions {
-    SET_TENANT,
-    ADD_TO_LIST
+    SET_TOKEN,
+    SET_USER
 }

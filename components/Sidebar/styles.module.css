@@ -1,0 +1,33 @@
+.container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    background-color: #fff;
+    z-index: 999;
+}
+
+.area {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header .loginArea {
+    border-bottom: 1.5px solid #000;
+
+}
+
+.header .closeBtn {}
+
+.line {
+    border-bottom: 1.5px solid #e2e2e2;
+    margin-top: -1.5px;
+}
