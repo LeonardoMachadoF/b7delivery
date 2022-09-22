@@ -25,13 +25,22 @@ const Home = (data: Props) => {
     }, [])
 
     const [products, setProducts] = useState<Product[]>(data.products)
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
     const handleSearch = (searchValue: string) => {
-        setProducts([]);
         setSearchValue(searchValue);
     }
+    useEffect(() => {
+        let newFilteredProducts: Product[] = [];
+        for (let product of data.products) {
+            if (product.name.toLowerCase().indexOf(searchValue.toLocaleLowerCase()) > -1) {
+                newFilteredProducts.push(product);
+            }
+        }
+        setFilteredProducts(newFilteredProducts);
+    }, [searchValue])
 
     return (
         <div className={styles.container}>
@@ -62,10 +71,9 @@ const Home = (data: Props) => {
                 </div>
             </header>
             <div className={styles.mainArea}>
-                {products.length > 0 &&
+                {!searchValue &&
                     <>
                         <Banner />
-
                         <div className={styles.grid}>
                             {products.map((data: Product) => (
                                 <ProductItem key={data.id} data={data} />
@@ -73,7 +81,14 @@ const Home = (data: Props) => {
                         </div>
                     </>
                 }
-                {products.length === 0 &&
+                {filteredProducts.length > 0 &&
+                    <div className={styles.grid}>
+                        {filteredProducts.map((item, index) => (
+                            <ProductItem key={index} data={item} />
+                        ))}
+                    </div>
+                }
+                {filteredProducts.length === 0 &&
                     <div className={styles.noProduct}>
                         <div className={styles.searchFor}>
                             Procurando por: <div className={styles.searched}>{searchValue}</div>

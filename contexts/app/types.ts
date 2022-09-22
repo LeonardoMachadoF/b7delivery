@@ -4,7 +4,6 @@ import { Tenant } from "../../types/Tenant"
 
 export type DataType = {
     tenant: Tenant | null;
-    listProducts: Product[] | [];
 }
 
 export type ActionType = {
@@ -22,6 +21,5 @@ export type ProviderType = {
 }
 
 export enum Actions {
-    SET_TENANT,
-    ADD_TO_LIST
+    SET_TENANT
 }

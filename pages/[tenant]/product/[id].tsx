@@ -1,5 +1,7 @@
+import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Header } from '../../../components/Header';
@@ -8,23 +10,45 @@ import { useAppContext } from '../../../contexts/app';
 import { useApi } from '../../../libs/useApi';
 import { useFormatter } from '../../../libs/useFormatter';
 import styles from '../../../styles/ProductId.module.css'
+import { CartCookie } from '../../../types/CartCookie';
 import { Product } from '../../../types/Product';
 import { Tenant } from '../../../types/Tenant';
 
 const Product = (data: Props) => {
-    const { tenant, setTenant, listProducts, setAddProduct } = useAppContext();
+    const { tenant, setTenant } = useAppContext();
     useEffect(() => {
         setTenant(data.tenant)
     }, [])
 
-    const [qtCount, setQtCount] = useState(1);
-
+    const router = useRouter();
     const formatter = useFormatter();
 
+    const [qtCount, setQtCount] = useState(1);
+
     const handleAddToCart = () => {
-        for (let i = 0; i < qtCount; i++) setAddProduct(data.product);
-        console.log(listProducts)
-    }
+        let cart: CartCookie[] = [];
+
+        if (hasCookie('cart')) {
+            const cartCookie = getCookie('cart');
+            const cartJson: CartCookie[] = JSON.parse(cartCookie as string);
+            for (let i in cartJson) {
+                if (cartJson[i].qt && cartJson[i].id) {
+                    cart.push(cartJson[i]);
+                }
+            }
+        }
+
+        const cartIndex = cart.findIndex(item => item.id === data.product.id);
+        if (cartIndex > -1) {
+            cart[cartIndex].qt += qtCount;
+        } else {
+            cart.push({ id: data.product.id, qt: qtCount });
+        }
+
+        setCookie('cart', JSON.stringify(cart));
+
+        // router.push(`/${data.tenant.slug}/cart`);
+    };
 
     const onUpdateQt = (newCount: number) => {
         setQtCount(newCount);
@@ -33,7 +57,7 @@ const Product = (data: Props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>{data.product.name} | {data.tenant.name}</title>
+                <title>{`${data.product.name} | ${data.tenant.name}`}</title>
             </Head>
             <div className={styles.headerArea}>
                 <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}`} title='Produto' invert />
@@ -97,7 +121,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         return { redirect: { destination: '/', permanent: false } }
     }
 
-    const product = await api.getProduct(id as string)
+    const product = await api.getProduct(parseInt(id as string));
 
     return {
         props: {
