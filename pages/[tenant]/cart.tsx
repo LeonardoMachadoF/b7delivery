@@ -1,6 +1,7 @@
 import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
@@ -10,6 +11,7 @@ import { useAuthContext } from '../../contexts/auth';
 import { useApi } from '../../libs/useApi';
 import { useFormatter } from '../../libs/useFormatter';
 import styles from '../../styles/Cart.module.css'
+import { CartItem } from '../../types/CartItem';
 import { Product } from '../../types/Product';
 import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
@@ -17,7 +19,10 @@ import { User } from '../../types/User';
 const Cart = (data: Props) => {
     const { tenant, setTenant } = useAppContext();
     const { setToken, setUser } = useAuthContext();
+    const router = useRouter();
     const formatter = useFormatter();
+
+    const [cart, setCart] = useState<CartItem[]>(data.cart);
 
     useEffect(() => {
         setTenant(data.tenant);
@@ -25,18 +30,38 @@ const Cart = (data: Props) => {
         if (data.user) setUser(data.user);
     }, [])
 
-    const [shippingInput, setShippingInput] = useState('');
-    const [shippingPrice, setShippingPrice] = useState(0);
+    //Resume
+    useEffect(() => {
+        let sub = 0;
+        for (let i in cart) {
+            sub += cart[i].product.price * cart[i].qt;
+        };
+        setSubtotal(sub);
+    }, [cart])
     const [subtotal, setSubtotal] = useState(0);
+    const handleFinish = () => {
+        router.push(`/${data.tenant.slug}/checkout`)
+    }
 
-    const handleShippingCalc = () => { }
+    //Product
 
-    const handleFinish = () => { }
+
+    //Shipping
+    const [shippingInput, setShippingInput] = useState('');
+    const [shippingAddress, setShippingAddress] = useState('Rua bla bla');
+    const [shippingPrice, setShippingPrice] = useState(0);
+    const [shippingTime, setShippingTime] = useState(0);
+    const handleShippingCalc = () => {
+        setShippingPrice(9.5);
+        setShippingTime(20);
+    };
+
+
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>${`Sacola | ${data.tenant.name}`}</title>
+                <title>{`Sacola | ${data.tenant.name}`}</title>
             </Head>
 
             <Header
@@ -46,7 +71,7 @@ const Cart = (data: Props) => {
             />
 
             <div className={styles.productsQuantity}>
-                x itens
+                {cart.length} {cart.length === 1 ? 'item' : 'itens'}
             </div>
 
             <div className={styles.productsList}></div>
@@ -71,18 +96,20 @@ const Cart = (data: Props) => {
                     />
                 </div>
 
-                <div className={styles.shippingInfo}>
-                    <div className={styles.shippingAddress}>Rua bla bla bla</div>
-                    <div className={styles.shippingTime}>
-                        <div className={styles.shippingTimeText}>Receba em até 20 minutos</div>
-                        <div
-                            className={styles.shippingPrice}
-                            style={{ color: data.tenant.mainColor }}
-                        >
-                            {formatter.formatPrice(shippingPrice)}
+                {shippingTime > 0 &&
+                    <div className={styles.shippingInfo}>
+                        <div className={styles.shippingAddress}>{shippingAddress}</div>
+                        <div className={styles.shippingTime}>
+                            <div className={styles.shippingTimeText}>Receba em até {shippingTime} minutos</div>
+                            <div
+                                className={styles.shippingPrice}
+                                style={{ color: data.tenant.mainColor }}
+                            >
+                                {formatter.formatPrice(shippingPrice)}
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
 
             <div className={styles.resumeArea}>
@@ -116,9 +143,9 @@ export default Cart;
 
 type Props = {
     tenant: Tenant;
-    products: Product[];
     user: User | null;
     token: string;
+    cart: CartItem[];
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -134,13 +161,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const user = await api.authorizeToken(token as string);
 
     const cartCookie = getCookie('cart', context);
-    console.log(cartCookie)
-
+    const cart = await api.getCartProducts(cartCookie as string);
+    console.log(cart)
     return {
         props: {
             tenant,
             user,
-            token
+            token,
+            cart
         }
     }
 }

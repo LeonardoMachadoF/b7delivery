@@ -25,7 +25,6 @@ const Home = (data: Props) => {
     }, [])
 
     const [products, setProducts] = useState<Product[]>(data.products)
-    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
@@ -39,7 +38,7 @@ const Home = (data: Props) => {
                 newFilteredProducts.push(product);
             }
         }
-        setFilteredProducts(newFilteredProducts);
+        setProducts(newFilteredProducts);
     }, [searchValue])
 
     return (
@@ -81,14 +80,14 @@ const Home = (data: Props) => {
                         </div>
                     </>
                 }
-                {filteredProducts.length > 0 &&
+                {products.length > 0 &&
                     <div className={styles.grid}>
-                        {filteredProducts.map((item, index) => (
+                        {products.map((item, index) => (
                             <ProductItem key={index} data={item} />
                         ))}
                     </div>
                 }
-                {filteredProducts.length === 0 &&
+                {products.length === 0 &&
                     <div className={styles.noProduct}>
                         <div className={styles.searchFor}>
                             Procurando por: <div className={styles.searched}>{searchValue}</div>
