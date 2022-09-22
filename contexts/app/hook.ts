@@ -14,12 +14,6 @@ export const useAppContext = () => {
                 type: Actions.SET_TENANT,
                 payload: { tenant }
             });
-        },
-        setAddProduct: (product: Product) => {
-            dispatch({
-                type: Actions.ADD_TO_LIST,
-                payload: { product }
-            });
         }
     }
 }

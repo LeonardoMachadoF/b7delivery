@@ -18,16 +18,16 @@ export const useApi = (tenantSlug: string) => {
                     return {
                         slug: tenantSlug,
                         name: 'B7Burger',
-                        mainColor: '#FF0000',
-                        secondColor: '#00FF00'
+                        mainColor: '#FB9400',
+                        secondColor: '#FFF9F2'
                     }
                     break;
                 case 'b7pizza':
                     return {
                         slug: tenantSlug,
                         name: 'B7Pizza',
-                        mainColor: '#00FF00',
-                        secondColor: '#0000FF'
+                        mainColor: '#6AB70A',
+                        secondColor: '#E0E0E0'
                     }
                     break;
                 default: return false;
@@ -37,13 +37,13 @@ export const useApi = (tenantSlug: string) => {
         getAllProducts: async () => {
             let products: Product[] = [];
             for (let i = 0; i < 10; i++) {
-                products.push({ ...TEMPORARYoneProduct, id: i })
+                products.push({ ...TEMPORARYoneProduct, id: i + 1 })
             };
             return products;
         },
 
-        getProduct: async (id: string) => {
-            return TEMPORARYoneProduct;
+        getProduct: async (id: number) => {
+            return { ...TEMPORARYoneProduct, id };
         },
 
         authorizeToken: async (token: string): Promise<User | false> => {

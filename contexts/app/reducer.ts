@@ -8,12 +8,6 @@ export const reducer = (state: DataType, action: ActionType) => {
         case Actions.SET_TENANT:
             return { ...state, tenant: action.payload.tenant }
             break;
-        case Actions.ADD_TO_LIST:
-            if (!state.listProducts) {
-                return state
-            }
-            return { ...state, listProducts: [...state.listProducts, action.payload.product] }
-            break;
         default: return state;
     }
 };
