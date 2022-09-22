@@ -29,7 +29,7 @@ const SignUp = (data: Props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Cadastro | {data.tenant.name}</title>
+                <title>{`Cadastro | ${data.tenant.name}`}</title>
             </Head>
             <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}/login`} />
 

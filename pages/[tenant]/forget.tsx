@@ -28,7 +28,7 @@ const Forget = (data: Props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Esqueci minha senha | {data.tenant.name}</title>
+                <title>{`Esqueci minha senha | ${data.tenant.name}`}</title>
             </Head>
             <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}/login`} />
 

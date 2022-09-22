@@ -33,7 +33,7 @@ const Product = (data: Props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>{data.product.name} | {data.tenant.name}</title>
+                <title>{`${data.product.name} | ${data.tenant.name}}`}</title>
             </Head>
             <div className={styles.headerArea}>
                 <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}`} title='Produto' invert />
