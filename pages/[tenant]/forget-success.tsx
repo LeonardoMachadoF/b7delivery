@@ -7,7 +7,7 @@ import { Header } from '../../components/Header';
 import { Icon } from '../../components/Icon';
 import { InputField } from '../../components/InputField';
 import { useAppContext } from '../../contexts/app';
-import { useApi } from '../../libs/useApi';
+import { myApi } from '../../libs/myApi';
 import styles from '../../styles/ForgetSuccess.module.css'
 import { Tenant } from '../../types/Tenant';
 
@@ -64,7 +64,7 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { tenant: tenantSlug } = context.query;
-    const api = useApi(tenantSlug as string);
+    const api = myApi(tenantSlug as string);
 
     const tenant = await api.getTenant();
 

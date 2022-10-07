@@ -1,16 +1,18 @@
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../../components/Button';
+import { CartProductItem } from '../../components/CartProductItem';
 import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { useAppContext } from '../../contexts/app';
 import { useAuthContext } from '../../contexts/auth';
-import { useApi } from '../../libs/useApi';
+import { myApi } from '../../libs/myApi';
 import { useFormatter } from '../../libs/useFormatter';
 import styles from '../../styles/Cart.module.css'
+import { CartCookie } from '../../types/CartCookie';
 import { CartItem } from '../../types/CartItem';
 import { Product } from '../../types/Product';
 import { Tenant } from '../../types/Tenant';
@@ -22,13 +24,39 @@ const Cart = (data: Props) => {
     const router = useRouter();
     const formatter = useFormatter();
 
-    const [cart, setCart] = useState<CartItem[]>(data.cart);
+
 
     useEffect(() => {
         setTenant(data.tenant);
         setToken(data.token);
         if (data.user) setUser(data.user);
     }, [])
+
+
+
+    //Product
+    const [cart, setCart] = useState<CartItem[]>(data.cart);
+    const handleCartChange = (newQt: number, id: number) => {
+        const tmpCart: CartItem[] = [...cart];
+        const cartIndex = tmpCart.findIndex(item => item.product.id === id);
+        if (newQt > 0) {
+            tmpCart[cartIndex].qt = newQt;
+        } else {
+            delete tmpCart[cartIndex];
+        }
+        let newCart: CartItem[] = tmpCart.filter(item => item);
+
+        let cartCookie: CartCookie[] = [];
+        for (let i in newCart) {
+            cartCookie.push({
+                id: newCart[i].product.id,
+                qt: newCart[i].qt
+            })
+        }
+        setCookie('cart', JSON.stringify(cartCookie));
+
+        setCart(newCart);
+    }
 
     //Resume
     useEffect(() => {
@@ -42,9 +70,6 @@ const Cart = (data: Props) => {
     const handleFinish = () => {
         router.push(`/${data.tenant.slug}/checkout`)
     }
-
-    //Product
-
 
     //Shipping
     const [shippingInput, setShippingInput] = useState('');
@@ -74,7 +99,17 @@ const Cart = (data: Props) => {
                 {cart.length} {cart.length === 1 ? 'item' : 'itens'}
             </div>
 
-            <div className={styles.productsList}></div>
+            <div className={styles.productsList}>
+                {cart.map((cartItem) => (
+                    <CartProductItem
+                        key={cartItem.product.id}
+                        color={data.tenant.mainColor}
+                        quantity={cartItem.qt}
+                        product={cartItem.product}
+                        onChange={handleCartChange}
+                    />
+                ))}
+            </div>
 
             <div className={styles.shippingArea}>
 
@@ -150,7 +185,7 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { tenant: tenantSlug } = context.query;
-    const api = useApi(tenantSlug as string);
+    const api = myApi(tenantSlug as string);
 
     const tenant = await api.getTenant();
     if (!tenant) {
@@ -162,7 +197,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const cartCookie = getCookie('cart', context);
     const cart = await api.getCartProducts(cartCookie as string);
-    console.log(cart)
     return {
         props: {
             tenant,

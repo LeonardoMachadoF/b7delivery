@@ -7,7 +7,7 @@ import { Button } from '../../../components/Button';
 import { Header } from '../../../components/Header';
 import { Quantity } from '../../../components/Quantity';
 import { useAppContext } from '../../../contexts/app';
-import { useApi } from '../../../libs/useApi';
+import { myApi } from '../../../libs/myApi';
 import { useFormatter } from '../../../libs/useFormatter';
 import styles from '../../../styles/ProductId.module.css'
 import { CartCookie } from '../../../types/CartCookie';
@@ -47,7 +47,7 @@ const Product = (data: Props) => {
 
         setCookie('cart', JSON.stringify(cart));
 
-        // router.push(`/${data.tenant.slug}/cart`);
+        router.push(`/${data.tenant.slug}/cart`);
     };
 
     const onUpdateQt = (newCount: number) => {
@@ -114,7 +114,7 @@ type Props = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { tenant: tenantSlug, id } = context.query;
-    const api = useApi(tenantSlug as string);
+    const api = myApi(tenantSlug as string);
 
     const tenant = await api.getTenant();
     if (!tenant) {

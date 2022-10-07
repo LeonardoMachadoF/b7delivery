@@ -11,7 +11,7 @@ const TEMPORARYoneProduct: Product = {
     price: 25.50,
     description: '2 Blends de carne de 150g, Queijo Cheddar,Bacon Caramelizado, Salada, Molho da casa,Pão brioche artesanal'
 }
-export const useApi = (tenantSlug: string) => {
+export const myApi = (tenantSlug: string) => {
     return {
         getTenant: async () => {
             switch (tenantSlug) {
