@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useAuthContext } from '../../contexts/auth';
 import { Tenant } from '../../types/Tenant';
-import { Button } from '../Button';
+import Button from '../Button';
 import { SidebarMenuItem } from '../SidebarMenuItem';
 import styles from './styles.module.css';
 

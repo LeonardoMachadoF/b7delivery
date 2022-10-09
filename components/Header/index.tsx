@@ -1,6 +1,7 @@
 import styles from './styles.module.css';
 import BackIcon from './backIcon.svg';
 import Link from 'next/link';
+import { memo } from 'react';
 
 type Props = {
     backHref: string;
@@ -10,7 +11,7 @@ type Props = {
     invert?: boolean;
 }
 
-export const Header = ({ backHref, color, title, subtitle, invert }: Props) => {
+const Header = ({ backHref, color, title, subtitle, invert }: Props) => {
     return (
         <div className={styles.container}>
             <div className={styles.leftSide}>
@@ -28,3 +29,5 @@ export const Header = ({ backHref, color, title, subtitle, invert }: Props) => {
         </div>
     )
 }
+
+export default memo(Header);

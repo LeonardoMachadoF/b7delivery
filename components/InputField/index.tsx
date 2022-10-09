@@ -1,7 +1,7 @@
 import styles from './styles.module.css';
 import EyeOn from './EyeOn.svg';
 import EyeOff from './EyeOff.svg';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 type Props = {
     color: string;
@@ -11,7 +11,7 @@ type Props = {
     password?: boolean;
 }
 
-export const InputField = ({ color, placeholder, value, onChange, password }: Props) => {
+const InputField = ({ color, placeholder, value, onChange, password }: Props) => {
     const [showPassword, setShowPassword] = useState(false);
     const [focused, setFocused] = useState(false);
 
@@ -41,3 +41,5 @@ export const InputField = ({ color, placeholder, value, onChange, password }: Pr
         </div>
     )
 }
+
+export default memo(InputField)

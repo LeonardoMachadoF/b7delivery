@@ -2,9 +2,9 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Button } from '../../components/Button';
-import { Header } from '../../components/Header';
-import { InputField } from '../../components/InputField';
+import Button from '../../components/Button';
+import Header from '../../components/Header';
+import InputField from '../../components/InputField';
 import { useAppContext } from '../../contexts/app';
 import { myApi } from '../../libs/myApi';
 import styles from '../../styles/Forget.module.css'

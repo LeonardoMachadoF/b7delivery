@@ -2,11 +2,11 @@ import { getCookie, setCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Button } from '../../components/Button';
-import { CartProductItem } from '../../components/CartProductItem';
-import { Header } from '../../components/Header';
-import { InputField } from '../../components/InputField';
+import { useCallback, useEffect, useState } from 'react';
+import Button from '../../components/Button';
+import CartProductItem from '../../components/CartProductItem';
+import Header from '../../components/Header';
+import InputField from '../../components/InputField';
 import { useAppContext } from '../../contexts/app';
 import { useAuthContext } from '../../contexts/auth';
 import { myApi } from '../../libs/myApi';
@@ -36,7 +36,7 @@ const Cart = (data: Props) => {
 
     //Product
     const [cart, setCart] = useState<CartItem[]>(data.cart);
-    const handleCartChange = (newQt: number, id: number) => {
+    const handleCartChange = useCallback((newQt: number, id: number) => {
         const tmpCart: CartItem[] = [...cart];
         const cartIndex = tmpCart.findIndex(item => item.product.id === id);
         if (newQt > 0) {
@@ -54,9 +54,9 @@ const Cart = (data: Props) => {
             })
         }
         setCookie('cart', JSON.stringify(cartCookie));
-
+        console.log(cart)
         setCart(newCart);
-    }
+    }, [cart.length]);
 
     //Resume
     useEffect(() => {

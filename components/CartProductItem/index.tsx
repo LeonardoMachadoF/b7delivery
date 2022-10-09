@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { memo } from 'react';
 import { useFormatter } from '../../libs/useFormatter';
 import { Product } from '../../types/Product';
 import { Quantity } from '../Quantity';
@@ -8,10 +9,11 @@ type Props = {
     color: string;
     quantity: number;
     product: Product;
-    onChange: (newCount: number, id: number) => void;
+    onChange?: (newCount: number, id: number) => void;
+    noEdit?: boolean;
 }
 
-export const CartProductItem = ({ color, quantity, product, onChange }: Props) => {
+const CartProductItem = ({ color, quantity, product, onChange, noEdit }: Props) => {
     const formatter = useFormatter();
 
     return (
@@ -31,14 +33,24 @@ export const CartProductItem = ({ color, quantity, product, onChange }: Props) =
                 </div>
             </div>
             <div className={styles.qtControl}>
-                <Quantity
-                    color={color}
-                    count={quantity}
-                    onUpdateCount={(newCount: number) => onChange(newCount, product.id)}
-                    min={0}
-                    small
-                />
+                {noEdit &&
+                    <div className={styles.qtArea}>
+                        <div className={styles.qtTitle} style={{ color: color }}>Qnt.</div>
+                        <div className={styles.qtCount} style={{ color: color }}>{quantity}</div>
+                    </div>
+                }
+                {!noEdit && onChange &&
+                    <Quantity
+                        color={color}
+                        count={quantity}
+                        onUpdateCount={(newCount: number) => onChange(newCount, product.id)}
+                        min={0}
+                        small
+                    />
+                }
             </div>
         </div>
     );
-}
+};
+
+export default memo(CartProductItem)
