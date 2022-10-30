@@ -5,6 +5,7 @@ import Card from './Card.svg'
 import Confirmed from './Confirmed.svg'
 import Cupom from './Cupom.svg'
 import Location from './Location.svg'
+import Dots from './Dots.svg'
 import { useMemo } from 'react';
 
 type Props = {
@@ -24,6 +25,7 @@ export const Icon = ({ icon, color, width, height }: Props) => {
         'confirmed': <Confirmed color={color} />,
         'cupom': <Cupom color={color} />,
         'location': <Location color={color} />,
+        'dots': <Dots color={color} />
     }
 
     let Component = useMemo(() => {

@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    align-items: center;
+    border-bottom: 1.5px solid rgba(27, 27, 27, 0.1);
+}
+
+.addressArea {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 32px 0px;
+}
+
+.addressIcon {
+    margin-left: 19px;
+}
+
+.addressText {
+    width: 200px;
+    font-weight: 400;
+    font-size: 15px;
+    color: #1b1b1b;
+    margin-left: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

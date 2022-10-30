@@ -13,7 +13,7 @@ import { useAuthContext } from '../../contexts/auth';
 import { myApi } from '../../libs/myApi';
 import { useFormatter } from '../../libs/useFormatter';
 import styles from '../../styles/Checkout.module.css'
-import { Adress } from '../../types/Adress';
+import { Address } from '../../types/Adress';
 import { CartItem } from '../../types/CartItem';
 import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
@@ -51,7 +51,7 @@ const Checkout = (data: Props) => {
 
     //Shipping
     const [shippingPrice, setShippingPrice] = useState(0);
-    const [shippingAddress, setShippingAddress] = useState<Adress>();
+    const [shippingAddress, setShippingAddress] = useState<Address>();
 
     const handleChangeAddress = useCallback(() => {
         router.push(`/${data.tenant.slug}/myaddresses`);
