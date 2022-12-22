@@ -5,3 +5,8 @@
     padding: 50px 24px;
     background-color: #fff;
 }
+
+.list {
+    flex: 1;
+    border-top: 1.5px solid rgba(27, 27, 27, 0.1);
+}

@@ -6,7 +6,26 @@
     background-color: #fff;
 }
 
-.list {
-    flex: 1;
+.inputs {
     border-top: 1.5px solid rgba(27, 27, 27, 0.1);
+}
+
+.row {
+    display: flex;
+    margin-top: 24px;
+    gap: 24px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.column {
+    width: 1px;
+}
+
+.btnArea {
+    margin-top: 24px;
 }
