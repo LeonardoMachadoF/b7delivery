@@ -2,7 +2,7 @@ import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AddressItem } from '../../components/AddressItem';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -42,6 +42,21 @@ const MyAddresses = (data: Props) => {
 
     const handleAddressDelete = (id: number) => { }
 
+    const [menuOpened, setMenuOpened] = useState(0);
+    const handleMenuEvent = (event: MouseEvent) => {
+        const tagName = (event.target as Element).tagName;
+        if (!['path', 'svg'].includes(tagName)) {
+            setMenuOpened(0);
+        }
+    }
+
+    useEffect(() => {
+        window.removeEventListener('click', handleMenuEvent);
+        window.addEventListener('click', handleMenuEvent);
+
+        return () => window.removeEventListener('click', handleMenuEvent)
+    }, [menuOpened])
+
     return (
         <div className={styles.container}>
             <Head>
@@ -64,6 +79,8 @@ const MyAddresses = (data: Props) => {
                             onSelect={handleAddressSelect}
                             onEdit={handleAddressEdit}
                             onDelete={handleAddressDelete}
+                            menuOpened={menuOpened}
+                            setMenuOpened={setMenuOpened}
                         />
                     )
                 })}
@@ -72,7 +89,7 @@ const MyAddresses = (data: Props) => {
             <div className={styles.btnArea}>
                 <Button
                     color={data.tenant.mainColor}
-                    label='Novo Enredeço'
+                    label='Novo Endereço'
                     onClick={handleNewAddress}
                     fill
                 />

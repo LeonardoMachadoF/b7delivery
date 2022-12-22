@@ -24,3 +24,8 @@ export const Provider = ({ children }: ProviderType) => {
         </AppContext.Provider>
     );
 }
+
+
+
+
+
