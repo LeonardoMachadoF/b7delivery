@@ -19,7 +19,7 @@ import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
 
 const Checkout = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
+    const { tenant, setTenant, shippingAddress, shippingPrice } = useAppContext();
     const { setToken, setUser } = useAuthContext();
     const router = useRouter();
     const formatter = useFormatter();
@@ -50,8 +50,6 @@ const Checkout = (data: Props) => {
     }, [])
 
     //Shipping
-    const [shippingPrice, setShippingPrice] = useState(0);
-    const [shippingAddress, setShippingAddress] = useState<Address>();
 
     const handleChangeAddress = useCallback(() => {
         router.push(`/${data.tenant.slug}/myaddresses`);

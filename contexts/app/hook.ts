@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { AppContext } from "."
+import { Address } from "../../types/Adress";
 import { Product } from "../../types/Product";
 import { Tenant } from "../../types/Tenant";
 import { Actions } from "./types";
@@ -14,6 +15,18 @@ export const useAppContext = () => {
                 type: Actions.SET_TENANT,
                 payload: { tenant }
             });
+        },
+        setShippingAddress: (shippingAddress: Address) => {
+            dispatch({
+                type: Actions.SET_SHIPPING_ADDRESS,
+                payload: { shippingAddress }
+            });
+        },
+        setShippingPrice: (shippingPrice: number) => {
+            dispatch({
+                type: Actions.SET_SHIPPING_PRICE,
+                payload: { shippingPrice }
+            });
         }
     }
-}
+} 

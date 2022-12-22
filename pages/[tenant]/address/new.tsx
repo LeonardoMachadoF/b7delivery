@@ -3,20 +3,20 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { AddressItem } from '../../components/AddressItem';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
-import { useAppContext } from '../../contexts/app';
-import { useAuthContext } from '../../contexts/auth';
-import { myApi } from '../../libs/myApi';
-import { useFormatter } from '../../libs/useFormatter';
-import styles from '../../styles/MyAddresses.module.css'
-import { Address } from '../../types/Adress';
-import { CartItem } from '../../types/CartItem';
-import { Tenant } from '../../types/Tenant';
-import { User } from '../../types/User';
+import { AddressItem } from '../../../components/AddressItem';
+import Button from '../../../components/Button';
+import Header from '../../../components/Header';
+import { useAppContext } from '../../../contexts/app';
+import { useAuthContext } from '../../../contexts/auth';
+import { myApi } from '../../../libs/myApi';
+import { useFormatter } from '../../../libs/useFormatter';
+import styles from '../../../styles/NewAddress.module.css'
+import { Address } from '../../../types/Adress';
+import { CartItem } from '../../../types/CartItem';
+import { Tenant } from '../../../types/Tenant';
+import { User } from '../../../types/User';
 
-const MyAddresses = (data: Props) => {
+const NewAddress = (data: Props) => {
     const { tenant, setTenant, setShippingPrice, setShippingAddress } = useAppContext();
     const { setToken, setUser } = useAuthContext();
     const router = useRouter();
@@ -27,47 +27,17 @@ const MyAddresses = (data: Props) => {
         router.push(`/${data.tenant.slug}//address/new`)
     }
 
-    const handleAddressEdit = (id: number) => {
-        router.push(`/${data.tenant.slug}/address/${id}`)
-    }
-
-    const handleAddressSelect = async (address: Address) => {
-        const price = await api.getShippingPrice(address);
-        if (price) {
-            setShippingAddress(address);
-            setShippingPrice(price);
-            router.push(`/${data.tenant.slug}/checkout`)
-        }
-    }
-
-    const handleAddressDelete = (id: number) => { }
-
     return (
         <div className={styles.container}>
             <Head>
-                <title>{`Meus Endereços | ${data.tenant.name}`}</title>
+                <title>{`Novo Endereço | ${data.tenant.name}`}</title>
             </Head>
 
             <Header
                 backHref={`/${data.tenant.slug}/checkout`}
                 color={data.tenant.mainColor}
-                title='Meus Endereços'
+                title='Novo Endereço'
             />
-
-            <div className={styles.list}>
-                {data.addresses.map((item) => {
-                    return (
-                        <AddressItem
-                            key={item.id}
-                            color={data.tenant.mainColor}
-                            address={item}
-                            onSelect={handleAddressSelect}
-                            onEdit={handleAddressEdit}
-                            onDelete={handleAddressDelete}
-                        />
-                    )
-                })}
-            </div>
 
             <div className={styles.btnArea}>
                 <Button
@@ -82,7 +52,7 @@ const MyAddresses = (data: Props) => {
     );
 }
 
-export default MyAddresses;
+export default NewAddress;
 
 type Props = {
     tenant: Tenant;
