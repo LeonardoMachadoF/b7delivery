@@ -17,7 +17,7 @@ import { CartItem } from '../../../types/CartItem';
 import { Tenant } from '../../../types/Tenant';
 import { User } from '../../../types/User';
 
-const NewAddress = (data: Props) => {
+const EditAddress = (data: Props) => {
     const { tenant, setTenant, setShippingPrice, setShippingAddress } = useAppContext();
     const { setToken, setUser } = useAuthContext();
     const router = useRouter();
@@ -26,59 +26,43 @@ const NewAddress = (data: Props) => {
 
     const [errorFields, setErrorFields] = useState<string[]>([]);
 
-    const [addressCep, setAddressCep] = useState("");
-    const [addressStreet, setAddressStreet] = useState("");
-    const [addressNumber, setAddressNumber] = useState("");
-    const [addressNeighborhood, setAddressNeighborhood] = useState("");
-    const [addressCity, setAddressCity] = useState("");
-    const [addressState, setAddressState] = useState("");
-    const [addressComplement, setAddressComplement] = useState("");
+    const [address, setAddress] = useState(data.address);
+
+    const changeAddressField = async (field: keyof Address, value: typeof address[keyof Address]) => {
+        setAddress({ ...address, [field]: value });
+    }
 
     const verifyAddress = () => {
         const numbers = /[^0-9]/g;
         let newErrorFields: string[] = [];
 
-        if (addressCep.replaceAll(numbers, "").length !== 8) newErrorFields.push('cep');
-        if (addressStreet.length <= 2) newErrorFields.push('street');
-        if (addressNeighborhood.length <= 2) newErrorFields.push('neighborhood');
-        if (addressCity.length <= 2) newErrorFields.push('city');
-        if (addressState.length != 2) newErrorFields.push('state');
+        if (address.cep.replaceAll(numbers, "").length !== 8) newErrorFields.push('cep');
+        if (address.neighborhood.length <= 2) newErrorFields.push('neighborhood');
+        if (address.street.length <= 2) newErrorFields.push('street');
+        if (address.state.length != 2) newErrorFields.push('state');
+        if (address.city.length <= 2) newErrorFields.push('city');
 
         setErrorFields(newErrorFields);
         return newErrorFields.length === 0 ? true : false;
     }
 
-    const handleNewAddress = async () => {
+    const handleSaveAddress = async () => {
         if (!verifyAddress()) {
-            let address: Address = {
-                id: 0,
-                cep: addressCep,
-                street: addressStreet,
-                city: addressCity,
-                state: addressState,
-                complement: addressComplement,
-                neighborhood: addressNeighborhood,
-                number: addressNumber
-            };
-            let newAddress = await api.addUserAddress(address);
-            if (newAddress.id > 0) {
-                router.push(`/${data.tenant.slug}/myaddresses`)
-            } else {
-                alert("Ocorreu algum erro, tente novamente mais tarde!")
-            }
+            await api.editUserAddress(address);
         }
     }
+
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>{`Novo Endereço | ${data.tenant.name}`}</title>
+                <title>{`Editar Endereço | ${data.tenant.name}`}</title>
             </Head>
 
             <Header
                 backHref={`/${data.tenant.slug}/myaddresses`}
                 color={data.tenant.mainColor}
-                title='Novo Endereço'
+                title='Editar Endereço'
             />
 
             <div className={styles.inputs}>
@@ -89,8 +73,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite um CEP"
-                            value={addressCep}
-                            onChange={value => setAddressCep(value)}
+                            value={address.cep}
+                            onChange={value => changeAddressField('cep', value)}
                             warning={errorFields.includes('cep')}
                         />
                     </div>
@@ -102,8 +86,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite uma Rua"
-                            value={addressStreet}
-                            onChange={value => setAddressStreet(value)}
+                            value={address.street}
+                            onChange={value => changeAddressField('street', value)}
                             warning={errorFields.includes('street')}
                         />
                     </div>
@@ -112,8 +96,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite um Número"
-                            value={addressNumber}
-                            onChange={value => setAddressNumber(value)}
+                            value={address.number}
+                            onChange={value => changeAddressField('number', value)}
                             warning={errorFields.includes('number')}
                         />
                     </div>
@@ -125,8 +109,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite um Bairro"
-                            value={addressNeighborhood}
-                            onChange={value => setAddressNeighborhood(value)}
+                            value={address.neighborhood}
+                            onChange={value => changeAddressField('neighborhood', value)}
                             warning={errorFields.includes('neighborhood')}
                         />
                     </div>
@@ -139,8 +123,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite uma Cidade"
-                            value={addressCity}
-                            onChange={value => setAddressCity(value)}
+                            value={address.city}
+                            onChange={value => changeAddressField('city', value)}
                             warning={errorFields.includes('city')}
                         />
                     </div>
@@ -153,8 +137,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite um Estado"
-                            value={addressState}
-                            onChange={value => setAddressState(value)}
+                            value={address.state}
+                            onChange={value => changeAddressField('state', value)}
                             warning={errorFields.includes('state')}
                         />
                     </div>
@@ -167,8 +151,8 @@ const NewAddress = (data: Props) => {
                         <InputField
                             color={data.tenant.mainColor}
                             placeholder="Digite um Complemento"
-                            value={addressComplement}
-                            onChange={value => setAddressComplement(value)}
+                            value={address.complement ?? ""}
+                            onChange={value => changeAddressField('complement', value)}
                             warning={errorFields.includes('complement')}
                         />
                     </div>
@@ -178,8 +162,8 @@ const NewAddress = (data: Props) => {
             <div className={styles.btnArea}>
                 <Button
                     color={data.tenant.mainColor}
-                    label='Adicionar'
-                    onClick={handleNewAddress}
+                    label='Atualizar'
+                    onClick={handleSaveAddress}
                     fill
                 />
             </div>
@@ -188,17 +172,17 @@ const NewAddress = (data: Props) => {
     );
 }
 
-export default NewAddress;
+export default EditAddress;
 
 type Props = {
     tenant: Tenant;
     user: User | null;
     token: string;
-    addresses: Address[];
+    address: Address;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { tenant: tenantSlug } = context.query;
+    const { tenant: tenantSlug, addressId } = context.query;
     const api = myApi(tenantSlug as string);
 
     const tenant = await api.getTenant();
@@ -216,14 +200,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
 
-    const addresses = await api.getUserAddresses(user.email);
+    const address = await api.getUserAddress(parseInt(addressId as string));
+
+    if (!address) return { redirect: { destination: "/myaddresses", permanent: false } };
 
     return {
         props: {
             tenant,
             user,
             token,
-            addresses
+            address
         }
     }
 }

@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -21,6 +21,7 @@ import { User } from '../../types/User';
 const Checkout = (data: Props) => {
     const { tenant, setTenant, shippingAddress, shippingPrice } = useAppContext();
     const { setToken, setUser } = useAuthContext();
+    const api = myApi(data.tenant.slug);
     const router = useRouter();
     const formatter = useFormatter();
 
@@ -45,8 +46,22 @@ const Checkout = (data: Props) => {
         setSubtotal(sub);
     }, [cart])
     const [subtotal, setSubtotal] = useState(0);
-    const handleFinish = useCallback(() => {
-        alert('finalizado!')
+
+    const handleFinish = useCallback(async () => {
+        if (shippingAddress) {
+            const order = await api.setOrder(
+                shippingAddress,
+                paymentType,
+                paymentChange,
+                cupom,
+                data.cart
+            );
+            if (order) {
+                router.push(`/${data.tenant.slug}/order/${order.id}`);
+            } else {
+                alert("Ocorreu um erro! Tente mais tarde!")
+            }
+        }
     }, [])
 
     //Shipping

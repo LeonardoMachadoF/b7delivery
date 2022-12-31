@@ -12,6 +12,10 @@ export const useFormatter = () => {
 
             const remain = minDigits - qt.toString().length
             return `${'0'.repeat(remain)}${qt}`
+        },
+        formatDate: (date: String) => {
+            let currentDate = new Date(`${date} 00:00:00`);
+            return new Intl.DateTimeFormat('pt-BR').format(currentDate);
         }
     }
 }

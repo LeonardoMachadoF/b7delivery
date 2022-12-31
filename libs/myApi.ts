@@ -1,5 +1,6 @@
 import { Address } from "../types/Adress";
 import { CartItem } from "../types/CartItem";
+import { Order } from "../types/Order";
 import { Product } from "../types/Product";
 import { User } from "../types/User";
 
@@ -10,6 +11,33 @@ const TEMPORARYoneProduct: Product = {
     name: 'Texas Burguer',
     price: 25.50,
     description: '2 Blends de carne de 150g, Queijo Cheddar,Bacon Caramelizado, Salada, Molho da casa,Pão brioche artesanal'
+}
+
+const TEMPORARYorder: Order = {
+    id: 1234,
+    status: "preparing",
+    orderDate: "2022-12-04",
+    userId: "123",
+    shippingAddress: {
+        id: 2,
+        cep: "12247555",
+        street: "Rua das Flores",
+        number: "23",
+        neighborhood: "Jardins",
+        city: "São Paulo",
+        state: "SP"
+    },
+    shippingPrice: 9.14,
+    paymentType: "card",
+    cupom: "ABC",
+    cupomDiscount: 14.1,
+    products: [
+        { product: { ...TEMPORARYoneProduct, id: 1 }, qt: 1 },
+        { product: { ...TEMPORARYoneProduct, id: 2 }, qt: 2 },
+        { product: { ...TEMPORARYoneProduct, id: 3 }, qt: 1 },
+    ],
+    subtotal: 204,
+    total: 198.84
 }
 export const myApi = (tenantSlug: string) => {
     return {
@@ -99,9 +127,45 @@ export const myApi = (tenantSlug: string) => {
             return addresses;
         },
 
+        addUserAddress: async (address: Address) => {
+            return { ...address, id: 9 };
+        },
+
         getShippingPrice: async (addrress: Address) => {
             return 9.16;
-        }
+        },
+        getUserAddress: async (id: number) => {
+            let address: Address = {
+                id,
+                street: 'Rua das Flores',
+                cep: '9999999',
+                city: 'São Paulo',
+                neighborhood: 'Jardins',
+                number: `${id}00`,
+                state: 'SP',
+                complement: 'casa'
+            }
+            return address;
+        },
+        editUserAddress: async (address: Address) => {
+            return true;
+        },
+        deleteUserAddress: async (addressId: number) => {
+            return true;
+        },
 
+        setOrder: async (
+            address: Address,
+            paymentType: 'money' | 'card',
+            paymentChange: number,
+            cupom: string,
+            cart: CartItem[]
+        ) => {
+            return TEMPORARYorder;
+        },
+
+        getOrder: async (orderId: number) => {
+            return TEMPORARYorder;
+        }
     }
 }
