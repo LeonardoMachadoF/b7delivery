@@ -66,13 +66,13 @@ const OrderID = (data: Props) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>{`Pedido ${data.order.id} | ${data.tenant.name}`}</title>
+                <title>{`Pedido #${data.order.id} | ${data.tenant.name}`}</title>
             </Head>
 
             <Header
                 backHref={`/${data.tenant.slug}/cart`}
                 color={data.tenant.mainColor}
-                title={`Pedido ${data.order.id}`}
+                title={`Pedido #${data.order.id}`}
             />
 
             {data.order.status !== 'delivered' &&
