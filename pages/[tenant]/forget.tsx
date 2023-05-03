@@ -11,7 +11,7 @@ import styles from '../../styles/Forget.module.css'
 import { Tenant } from '../../types/Tenant';
 
 const Forget = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
+    const { setTenant } = useAppContext();
 
     const router = useRouter();
 

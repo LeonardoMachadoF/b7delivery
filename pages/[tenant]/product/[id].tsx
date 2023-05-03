@@ -15,7 +15,7 @@ import { Product } from '../../../types/Product';
 import { Tenant } from '../../../types/Tenant';
 
 const Product = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
+    const { setTenant } = useAppContext();
     useEffect(() => {
         setTenant(data.tenant)
     }, [])

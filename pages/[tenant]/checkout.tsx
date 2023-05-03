@@ -13,13 +13,12 @@ import { useAuthContext } from '../../contexts/auth';
 import { myApi } from '../../libs/myApi';
 import { useFormatter } from '../../libs/useFormatter';
 import styles from '../../styles/Checkout.module.css'
-import { Address } from '../../types/Adress';
 import { CartItem } from '../../types/CartItem';
 import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
 
 const Checkout = (data: Props) => {
-    const { tenant, setTenant, shippingAddress, shippingPrice } = useAppContext();
+    const { setTenant, shippingAddress, shippingPrice } = useAppContext();
     const { setToken, setUser } = useAuthContext();
     const api = myApi(data.tenant.slug);
     const router = useRouter();

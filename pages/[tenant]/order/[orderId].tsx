@@ -2,8 +2,7 @@ import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import Button from '../../../components/Button';
+import { useEffect } from 'react';
 import ButtonWithIcon from '../../../components/ButtonWithIcon';
 import CartProductItem from '../../../components/CartProductItem';
 import Header from '../../../components/Header';
@@ -13,15 +12,13 @@ import { useAuthContext } from '../../../contexts/auth';
 import { myApi } from '../../../libs/myApi';
 import { useFormatter } from '../../../libs/useFormatter';
 import styles from '../../../styles/Order-id.module.css'
-import { CartItem } from '../../../types/CartItem';
 import { Tenant } from '../../../types/Tenant';
 import { User } from '../../../types/User';
 import { Order } from '../../../types/Order';
 
 const OrderID = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
+    const { setTenant } = useAppContext();
     const { setToken, setUser } = useAuthContext();
-    const api = myApi(data.tenant.slug);
     const router = useRouter();
     const formatter = useFormatter();
 

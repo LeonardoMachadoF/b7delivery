@@ -2,27 +2,19 @@ import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { AddressItem } from '../../../components/AddressItem';
+import { useState } from 'react';
 import Button from '../../../components/Button';
 import Header from '../../../components/Header';
 import InputField from '../../../components/InputField';
-import { useAppContext } from '../../../contexts/app';
-import { useAuthContext } from '../../../contexts/auth';
 import { myApi } from '../../../libs/myApi';
-import { useFormatter } from '../../../libs/useFormatter';
 import styles from '../../../styles/NewAddress.module.css'
 import { Address } from '../../../types/Adress';
-import { CartItem } from '../../../types/CartItem';
 import { Tenant } from '../../../types/Tenant';
 import { User } from '../../../types/User';
 
 const NewAddress = (data: Props) => {
-    const { tenant, setTenant, setShippingPrice, setShippingAddress } = useAppContext();
-    const { setToken, setUser } = useAuthContext();
     const router = useRouter();
     const api = myApi(data.tenant.slug);
-    const formatter = useFormatter();
 
     const [errorFields, setErrorFields] = useState<string[]>([]);
 

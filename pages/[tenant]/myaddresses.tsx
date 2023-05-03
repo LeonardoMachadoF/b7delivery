@@ -7,21 +7,16 @@ import { AddressItem } from '../../components/AddressItem';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import { useAppContext } from '../../contexts/app';
-import { useAuthContext } from '../../contexts/auth';
 import { myApi } from '../../libs/myApi';
-import { useFormatter } from '../../libs/useFormatter';
 import styles from '../../styles/MyAddresses.module.css'
 import { Address } from '../../types/Adress';
-import { CartItem } from '../../types/CartItem';
 import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
 
 const MyAddresses = (data: Props) => {
-    const { tenant, setTenant, setShippingPrice, setShippingAddress } = useAppContext();
-    const { setToken, setUser } = useAuthContext();
+    const { setShippingPrice, setShippingAddress } = useAppContext();
     const router = useRouter();
     const api = myApi(data.tenant.slug);
-    const formatter = useFormatter();
 
     const handleNewAddress = () => {
         router.push(`/${data.tenant.slug}//address/new`)

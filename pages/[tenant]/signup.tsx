@@ -1,7 +1,6 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -12,9 +11,7 @@ import styles from '../../styles/SignUp.module.css'
 import { Tenant } from '../../types/Tenant';
 
 const SignUp = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
-
-    const router = useRouter();
+    const { setTenant } = useAppContext();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,6 +28,7 @@ const SignUp = (data: Props) => {
             <Head>
                 <title>{`Cadastro | ${data.tenant.name}`}</title>
             </Head>
+
             <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}/login`} />
 
             <div className={styles.header}>{data.tenant.name}</div>
@@ -103,9 +101,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const tenant = await api.getTenant();
 
-    if (!tenant) {
-        return { redirect: { destination: '/', permanent: false } }
-    }
+    if (!tenant) return { redirect: { destination: '/', permanent: false } };
 
     return {
         props: {

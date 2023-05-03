@@ -119,9 +119,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const tenant = await api.getTenant();
 
-    if (!tenant) {
-        return { redirect: { destination: '/', permanent: false } }
-    }
+    if (!tenant) return { redirect: { destination: '/', permanent: false } };
 
     return {
         props: {

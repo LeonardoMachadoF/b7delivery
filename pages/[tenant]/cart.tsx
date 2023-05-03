@@ -14,12 +14,11 @@ import { useFormatter } from '../../libs/useFormatter';
 import styles from '../../styles/Cart.module.css'
 import { CartCookie } from '../../types/CartCookie';
 import { CartItem } from '../../types/CartItem';
-import { Product } from '../../types/Product';
 import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
 
 const Cart = (data: Props) => {
-    const { tenant, setTenant } = useAppContext();
+    const { setTenant } = useAppContext();
     const { setToken, setUser } = useAuthContext();
     const router = useRouter();
     const formatter = useFormatter();
@@ -76,12 +75,11 @@ const Cart = (data: Props) => {
     const [shippingAddress, setShippingAddress] = useState('Rua bla bla');
     const [shippingPrice, setShippingPrice] = useState(0);
     const [shippingTime, setShippingTime] = useState(0);
+
     const handleShippingCalc = () => {
         setShippingPrice(9.5);
         setShippingTime(20);
     };
-
-
 
     return (
         <div className={styles.container}>
